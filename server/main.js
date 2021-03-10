@@ -1,21 +1,16 @@
 import { Meteor } from "meteor/meteor";
-import { PostCollection } from "../imports/api/PostCollection";
+import { Accounts } from "meteor/accounts-base";
 import { CommentCollection } from "../imports/api/CommentCollection";
 
-const addComment = (commentText) =>
-  CommentCollection.insert({ text: commentText });
+const SEED_USERNAME = "meteorite";
+const SEED_PASSWORD = "password";
 
 Meteor.startup(() => {
-  if (CommentCollection.find().count() === 0) {
-    [
-      "First Task",
-      "Another Post",
-      "Second Task",
-      "Third Task",
-      "Fourth Task",
-      "Fifth Task",
-      "Sixth Task",
-      "Seventh Task",
-    ].forEach(addComment);
+  if (!Accounts.findUserByUsername(SEED_USERNAME)) {
+    Accounts.createUser({
+      username: SEED_USERNAME,
+      password: SEED_PASSWORD,
+    });
   }
+  const user = Accounts.findUserByUsername(SEED_USERNAME);
 });

@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { CommentCollection } from '../api/CommentCollection';
 
-export const CommentForm = (post_id) => {
+export const CommentForm = ({user}) => {
   const [text, setText] = useState("");
+
   const handleSubmit = e => {
     e.preventDefault();
 
     if (!text) return;
 
     CommentCollection.insert({
-      post_id: post_id,
-        text: text.trim(),
-      createdAt: new Date()
+      text: text.trim(),
+      createdAt: new Date(),
+      userId: user._id,
+      userName: user.username
     });
 
     setText("");
@@ -21,7 +23,7 @@ export const CommentForm = (post_id) => {
     <form className="comment-form" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Add a comment..."
+        placeholder="What's on your mind?"
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
